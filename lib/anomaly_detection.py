@@ -1,3 +1,4 @@
+from cProfile import label
 import pandas as pd
 import numpy as np
 import matplotlib
@@ -71,7 +72,9 @@ class Anomaly_nature():
                 X_input = pca_job.reduce_dimension_prod(X_input)
             plt.scatter(X_input[:, 0], X_input[:, 1])
             anomalie_prediction = self.model.predict(X_input)
+            plt.legend(["observed data during AI training", "your data Input"], loc= 'lower left', facecolor='cyan', fontsize=6)
             return self.model, fig, anomalie_prediction
+        plt.legend(["observed data during AI training"], loc= 'lower left', facecolor='cyan', fontsize=6)
         return self.model, fig
     
     def build_3dim(self, X_input=None, X_info=None):
