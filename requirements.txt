@@ -10,3 +10,4 @@ streamlit==1.7.0
 plotly==4.4.1
 xgboost==0.90
 xlrd==1.2.0
+click==8
