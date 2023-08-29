@@ -123,15 +123,23 @@ def AI_Job(df,single_pred=False):
         if not single_pred:
             Final_return['Patient_numbers'] = x_valid['Patient_numbers']
         display_predictions(colA, Final_return)
-        if single_pred:
-            colA.header("Anomaly Dectection")
-            fig, ano_pred = Anomalie_job(x_valid_clean) 
-            visual_truster(colA, Final_return.loc[0,'Trust%'], ano_pred)
-            colA.pyplot(fig, clear_figure=True)
-        my_bar.progress(80)
     except Exception as e:
         canvas.warning(e)
         return
+    if single_pred:
+        try:
+            colA.header("Anomaly Dectection")
+            fig, ano_pred = Anomalie_job(x_valid_clean) 
+        except Exception as e:
+            canvas.warning(e)
+            return
+        try:
+            visual_truster(colA, Final_return.loc[0,'Trust%'], ano_pred)
+            colA.pyplot(fig, clear_figure=True)
+        except Exception as e:
+            canvas.warning(e)
+            return
+        my_bar.progress(80)
     try:
         fig_expl = m_val_step.explain()
         colA.header("Explanation of prediction")
