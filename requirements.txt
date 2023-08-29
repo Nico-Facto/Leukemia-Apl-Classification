@@ -1,8 +1,6 @@
 pandas==1.0.5 
-numpy==1.20.1
 matplotlib==3.3.2 
 seaborn==0.11.0 
-scikit-learn==1.00.0
 jinja2
 shap==0.32.1
 eli5
@@ -12,3 +10,5 @@ plotly==4.4.1
 xgboost==0.90
 xlrd==1.2.0
 click==8
+scikit-learn==1.00.0
+numpy==1.20.1
