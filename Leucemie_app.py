@@ -84,54 +84,54 @@ def get_cell_values(col,key,ordered=True):
 
 def AI_Job(df,single_pred=False):
 
+    #try:
+    colA, colB = canvas.columns(2)
+    my_bar = colA.progress(0)
+
     try:
-        colA, colB = canvas.columns(2)
-        my_bar = colA.progress(0)
+        df = df.drop(columns=['target'])
+    except:
+        print('pass')
+    my_bar.progress(5)
 
-        try:
-            df = df.drop(columns=['target'])
-        except:
-            print('pass')
-        my_bar.progress(5)
+    x_valid = df
 
-        x_valid = df
+    if len(x_valid) < 2:
+        single_pred = True
+    
+    colA.header("Data Selected")
+    if single_pred:
+        x_valid_bis = x_valid.drop(columns=['Patient_numbers'])
+        colA.dataframe(x_valid_bis)
+    else:
+        colA.dataframe(x_valid)
 
-        if len(x_valid) < 2:
-            single_pred = True
-        
-        colA.header("Data Selected")
-        if single_pred:
-            x_valid_bis = x_valid.drop(columns=['Patient_numbers'])
-            colA.dataframe(x_valid_bis)
-        else:
-            colA.dataframe(x_valid)
-
-        my_bar.progress(10)
-        cleandata = DataClean(x_valid)
-        my_bar.progress(30)
-        x_valid_clean = cleandata.prod_clean_job(DATABRICK)
-        my_bar.progress(40)
-        m_val_step = consume_validation.ConsumeModelClf(x_valid_clean,MODEL,validation=False)
-        my_bar.progress(50)
-        m_val_step.predict_job()
-        my_bar.progress(60)
-        Final_return = m_val_step.show_result()
-        my_bar.progress(70)
-        colA.header("Prediction for datas")
-        Final_return = Final_return.drop(columns=['Id'])
-        Final_return['Predictions'] = Final_return.apply(convert_pred_to_label, axis=1)
-        if not single_pred:
-            Final_return['Patient_numbers'] = x_valid['Patient_numbers']
-        display_predictions(colA, Final_return)
-        if single_pred:
-            colA.header("Anomaly Dectection")
-            fig, ano_pred = Anomalie_job(x_valid_clean) 
-            visual_truster(colA, Final_return.loc[0,'Trust%'], ano_pred)
-            colA.pyplot(fig, clear_figure=True)
-        my_bar.progress(80)
-    except Exception as e:
-        canvas.warning(e)
-        return
+    my_bar.progress(10)
+    cleandata = DataClean(x_valid)
+    my_bar.progress(30)
+    x_valid_clean = cleandata.prod_clean_job(DATABRICK)
+    my_bar.progress(40)
+    m_val_step = consume_validation.ConsumeModelClf(x_valid_clean,MODEL,validation=False)
+    my_bar.progress(50)
+    m_val_step.predict_job()
+    my_bar.progress(60)
+    Final_return = m_val_step.show_result()
+    my_bar.progress(70)
+    colA.header("Prediction for datas")
+    Final_return = Final_return.drop(columns=['Id'])
+    Final_return['Predictions'] = Final_return.apply(convert_pred_to_label, axis=1)
+    if not single_pred:
+        Final_return['Patient_numbers'] = x_valid['Patient_numbers']
+    display_predictions(colA, Final_return)
+    if single_pred:
+        colA.header("Anomaly Dectection")
+        fig, ano_pred = Anomalie_job(x_valid_clean) 
+        visual_truster(colA, Final_return.loc[0,'Trust%'], ano_pred)
+        colA.pyplot(fig, clear_figure=True)
+    my_bar.progress(80)
+    #except Exception as e:
+    #    canvas.warning(e)
+    #    return
     try:
         fig_expl = m_val_step.explain()
         colA.header("Explanation of prediction")
