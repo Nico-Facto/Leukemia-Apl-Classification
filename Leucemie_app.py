@@ -11,6 +11,8 @@ from joblib import load
 
 import numpy, warnings
 numpy.warnings = warnings
+numpy.int = int
+numpy.float = float
 
 ######################### 
 
