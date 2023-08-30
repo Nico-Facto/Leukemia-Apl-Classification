@@ -9,6 +9,9 @@ from lib.data_clean import DataClean
 from lib.anomaly_detection import Anomaly_nature
 from joblib import load
 
+import numpy, warnings
+numpy.warnings = warnings
+
 ######################### 
 
 canvas.set_option('deprecation.showfileUploaderEncoding', False) ## Warming from futur version of streamlit ?
